@@ -15,7 +15,7 @@ dStart <- d - 730; # 2 year interval slider for time range
 stockData <- function(sym) {
         
         ## Get data from Yahoo! Finance
-        fn <- sprintf('http://ichart.finance.yahoo.com/table.csv?s=%s&a=08&b=0&c=1984&d=12&e=31&f=%s&g=w&ignore=.csv',
+        fn <- sprintf('http://ichart.finance.yahoo.com/table.csv?s=%s&a=08&b=1&c=1990&d=12&e=31&f=%s&g=d&ignore=.csv',
                       sym, format(d, "%Y"))
         yd <- read.csv(fn, colClasses=c("Date", rep("numeric",6)))
         
@@ -42,19 +42,22 @@ shinyServer(function(input, output, session) {
                 # disply message while data is loading 
                 withProgress(message='Loading data', detail='...', value = 0, {    
                         stockData = stocks();
-                })                
+                y = max(as.integer(nrow(stockData) / 20), 60)
                 gvisAnnotatedTimeLine(
                         stockData, datevar="Date",
                         numvar="Value", idvar="Type",
                         options=list(
                                 colors="['blue', 'lightblue']",
-                                zoomStartTime=dStart,
+                                zoomStartTime=d - y,
                                 zoomEndTime=d,
-                                legendPosition='newRow',
+                                legendPosition='sameRow',
                                 width=600, height=400, scaleColumns='[0,1]',
                                 scaleType='allmaximized',
+                                thickness='2',
                                 displayZoomButtons="FALSE")
                 )
+                })        
+                
         })
 
 
