@@ -41,8 +41,6 @@ shinyServer(function(input, output, session) {
                
                 # disply message while data is loading 
                 withProgress(message='Loading data', detail='...', value = 0, {    
-                
-                        idx = as.integer(grep(stockSymbol(), stockSymbols));
                         stockData = stocks();
                 })                
                 gvisAnnotatedTimeLine(
