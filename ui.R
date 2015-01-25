@@ -9,27 +9,37 @@ library(shiny)
 
 shinyUI(fluidPage(
 
-  # Application title
-  titlePanel("Monthly Stock Prices"),
+        tags$head(
+                tags$style(type='text/css', ".container-fluid { max-width: 1000px; }")
+        ),
+        # Application title
+        h1("Historical Stock Prices"),
 
-  # Sidebar with selection of stocks
-  sidebarLayout(
-    sidebarPanel(
-            selectInput("Stock", "Select Stock:", 
-                        list(
-                                'Apple Inc.'='AAPL',
-                                'IBM'='IBM',
-                                'BlackBerry Limited' = 'BBRY',
-                                'Google Inc.' = 'GOOG',
-                                'Facebook, Inc.' = 'FB'
-                        ), 
-                        multiple = FALSE)
-    ),
+        # Sidebar with selection of stocks
+        sidebarLayout(
+                sidebarPanel(
+                        p("Select a stock below to view historical pricing and volume."),
+                        selectInput("Stock", "Select Stock:", 
+                                list(
+                                        'Apple Inc.'='AAPL',
+                                        'IBM'='IBM',
+                                        'BlackBerry Limited' = 'BBRY',
+                                        'Google Inc.' = 'GOOG',
+                                        'Facebook, Inc.' = 'FB'
+                                ), 
+                                multiple = FALSE),
+                        p("Data is obtained from ", a("Yahoo! Finance", href="http://finance.yahoo.com/"))
+                ),
 
-    # Show a plot of the generated distribution
-    mainPanel(
-            h3(textOutput("Stock")),
-            htmlOutput("gvis")
-    )
-  )
+                
+                # Show a plot of the generated distribution
+                mainPanel(
+                        tags$head(
+                                tags$style(type='text/css', ".col-sm-8 { max-width: 610px; }")
+                        ),
+                        p("Use zoom range selection area (the area at the bottom of the chart) to select a range of dates to view"),
+                        h3(textOutput("Stock")),
+                        htmlOutput("gvis")
+                )
+        )
 ))
